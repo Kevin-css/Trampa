@@ -66,9 +66,9 @@ setInterval(() => {
 
   setTimeout(() => {
     maintenanceMode = false;
-  }, 10); // Desactivar el modo de mantenimiento después de 1 segundo
+  }, 100); // Desactivar el modo de mantenimiento después de 1 segundo
 
-}, 60000);
+}, 300000);
 
 app.listen(puerto, () => {
   console.log(`Servidor iniciado en el puerto ${puerto}`);
