@@ -66,7 +66,7 @@ setInterval(() => {
 
   setTimeout(() => {
     maintenanceMode = false;
-  }, 1000); // Desactivar el modo de mantenimiento después de 1 segundo
+  }, 10); // Desactivar el modo de mantenimiento después de 1 segundo
 
 }, 60000);
 
