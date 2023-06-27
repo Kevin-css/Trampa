@@ -4,23 +4,13 @@ const nodemailer = require('nodemailer');
 const moment = require('moment-timezone');
 const useragent = require('express-useragent');
 const path = require('path');
+const axios = require('axios');
 
 const app = express();
 const puerto = process.env.PORT || 3000;
 
-let maintenanceMode = false; // Variable para controlar el modo de mantenimiento
-
 app.use(bodyParser.json());
 app.use(useragent.express());
-
-// Middleware para verificar el modo de mantenimiento
-app.use((req, res, next) => {
-  if (maintenanceMode) {
-    res.status(503).send('El sitio se encuentra en modo de mantenimiento. Inténtalo de nuevo más tarde.');
-  } else {
-    next();
-  }
-});
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
@@ -60,15 +50,23 @@ app.post('/enviar-correo/:horaCliente/:clienteZonaHoraria', async (req, res) => 
 
 });
 
-// Activar el modo de mantenimiento cada 1 minuto
-setInterval(() => {
-  maintenanceMode = true;
+function hacerSolicitud() {
+  axios.get('http://localhost:3000')
+    .then(response => {
+      // Manejar la respuesta del servidor
+      console.log(response.data);
+    })
+    .catch(error => {
+      // Manejar el error de la solicitud
+      console.error(error);
+    });
+}
 
-  setTimeout(() => {
-    maintenanceMode = false;
-  }, 100); // Desactivar el modo de mantenimiento después de 1 segundo
+// Realizar la primera solicitud inmediatamente
+hacerSolicitud();
 
-}, 300000);
+// Repetir la solicitud cada 1 minuto (60000 milisegundos)
+setInterval(hacerSolicitud, 60000);
 
 app.listen(puerto, () => {
   console.log(`Servidor iniciado en el puerto ${puerto}`);
