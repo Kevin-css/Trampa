@@ -50,24 +50,6 @@ app.post('/enviar-correo/:horaCliente/:clienteZonaHoraria', async (req, res) => 
 
 });
 
-function hacerSolicitud() {
-  axios.get('http://localhost:3000')
-    .then(response => {
-      // Manejar la respuesta del servidor
-      console.log(response.data);
-    })
-    .catch(error => {
-      // Manejar el error de la solicitud
-      console.error(error);
-    });
-}
-
-// Realizar la primera solicitud inmediatamente
-hacerSolicitud();
-
-// Repetir la solicitud cada 1 minuto (60000 milisegundos)
-setInterval(hacerSolicitud, 60000);
-
 app.listen(puerto, () => {
   console.log(`Servidor iniciado en el puerto ${puerto}`);
 });
